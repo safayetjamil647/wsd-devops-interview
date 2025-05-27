@@ -1,0 +1,32 @@
+---
+- name: Create host-specific folders
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Create folder on app-vm
+      file:
+        path: /home/ubuntu/app
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+      when: inventory_hostname == "app-vm"
+
+    - name: Create folder on db-vm
+      file:
+        path: /home/ubuntu/db
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+      when: inventory_hostname == "db-vm"
+
+    - name: Create folder on web-vm
+      file:
+        path: /home/ubuntu/web
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+      when: inventory_hostname == "web-vm"

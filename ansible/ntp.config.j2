@@ -1,0 +1,16 @@
+tinker panic 0
+restrict default kod nomodify notrap nopeer noquery
+restrict -6 default kod nomodify notrap nopeer noquery
+restrict 127.0.0.1
+restrict -6 ::1
+
+# Use own IP as NTP server
+server {{ ansible_host }} minpoll 4 maxpoll 8
+fudge {{ ansible_host }} stratum 10
+
+# Optional fallback to public NTP servers
+server 0.bd.pool.ntp.org iburst
+server 1.bd.pool.ntp.org iburst
+
+driftfile /var/lib/ntp/drift
+keys /etc/ntp/keys

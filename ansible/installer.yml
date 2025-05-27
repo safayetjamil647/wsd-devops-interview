@@ -1,0 +1,27 @@
+---
+- name: Deploy custom NTP config using own IP as server
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Install NTP package
+      apt:
+        name: ntp
+        state: present
+        update_cache: true
+
+    - name: Deploy custom NTP config
+      template:
+        src: ntp.conf.j2
+        dest: /etc/ntp.conf
+        owner: root
+        group: root
+        mode: '0644'
+        backup: true
+
+    - name: Ensure NTP service is enabled and started
+      systemd:
+        name: ntp
+        state: restarted
+        enabled: true
