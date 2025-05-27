@@ -1,0 +1,10 @@
+# Add this to your .gitignore file
+venv/
+.env/
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env
+./env
