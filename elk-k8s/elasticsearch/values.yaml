@@ -1,0 +1,20 @@
+global:
+  name: elasticsearch
+  namespace: elasticsearch
+  esVersion: "8.0.0"
+
+deployment:
+  serviceName: elasticsearch-service
+  clusterNodes: "elasticsearch-0,elasticsearch-1,elasticsearch-2"
+  containers:
+    images: docker.elastic.co/elasticsearch/elasticsearch:8.0.0
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "1Gi"
+      limits:
+        cpu: "1"
+        memory: "2Gi"
+  volumeClaimTemplates:
+    storage: 10Gi
+    storageClassName: local-path
