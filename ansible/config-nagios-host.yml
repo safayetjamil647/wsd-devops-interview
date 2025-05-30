@@ -1,0 +1,49 @@
+---
+- name: Configure Nagios monitoring for NTP services
+  hosts: nagios
+  become: true
+  vars:
+    monitored_hosts:
+      - name: web-vm
+        ip: 192.168.0.196
+      - name: app-vm
+        ip: 192.168.0.140
+      - name: db-vm
+        ip: 192.168.0.156
+    nagios_objects_dir: "/usr/local/nagios/etc/objects"
+    nagios_cfg_path: "/usr/local/nagios/etc/nagios.cfg"
+
+  tasks:
+    - name: Ensure check_remote_ntp command exists
+      blockinfile:
+        path: "{{ nagios_objects_dir }}/commands.cfg"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK: check_remote_ntp"
+        block: |
+          define command {
+              command_name    check_remote_ntp
+              command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_ntp
+          }
+
+    - name: Create host and service definitions for NTP
+      template:
+        src: nagios_ntp_hosts.cfg.j2
+        dest: "{{ nagios_objects_dir }}/ntp_hosts.cfg"
+        mode: '0644'
+
+    - name: Include ntp_hosts.cfg in nagios.cfg
+      lineinfile:
+        path: "{{ nagios_cfg_path }}"
+        regexp: '^cfg_file=.*ntp_hosts.cfg'
+        line: "cfg_file={{ nagios_objects_dir }}/ntp_hosts.cfg"
+        state: present
+
+    - name: Validate Nagios config
+      command: /usr/local/nagios/bin/nagios -v {{ nagios_cfg_path }}
+      register: nagios_check
+      changed_when: false
+      failed_when: "'Things look okay' not in nagios_check.stdout"
+
+    - name: Reload Nagios service
+      systemd:
+        name: nagios
+        state: reloaded

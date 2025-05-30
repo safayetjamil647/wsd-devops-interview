@@ -1,0 +1,42 @@
+---
+- name: Setup NRPE and NTP Monitoring for Nagios
+  hosts: all
+  become: true
+  vars:
+    nagios_server_ip: "192.168.0.155"
+
+  tasks:
+    - name: Install required packages
+      apt:
+        name:
+          - ntp
+          - nagios-nrpe-server
+          - nagios-plugins
+        state: present
+        update_cache: true
+
+    - name: Ensure NTP service is enabled and started
+      systemd:
+        name: ntp
+        state: started
+        enabled: true
+
+    - name: Ensure check_ntp command is present in NRPE config
+      lineinfile:
+        path: /etc/nagios/nrpe.cfg
+        regexp: '^command\[check_ntp\]'
+        line: 'command[check_ntp]=/usr/lib/nagios/plugins/check_procs -c 1: -C ntpd'
+        state: present
+
+    - name: Set allowed_hosts with Nagios server IP
+      lineinfile:
+        path: /etc/nagios/nrpe.cfg
+        regexp: '^allowed_hosts='
+        line: "allowed_hosts=127.0.0.1,::1,{{ nagios_server_ip }}"
+        state: present
+
+    - name: Ensure NRPE service is restarted and enabled
+      systemd:
+        name: nagios-nrpe-server
+        state: restarted
+        enabled: true

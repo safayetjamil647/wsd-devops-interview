@@ -1,0 +1,29 @@
+{% for host in monitored_hosts %}
+
+define host {
+    use                     linux-server
+    host_name               {{ host.name }}
+    alias                   {{ host.name | replace('-', ' ') | capitalize }}
+    address                 {{ host.ip }}
+    check_command           check-ping
+    active_checks_enabled   1
+    passive_checks_enabled  1
+}
+
+define service {
+    use                     generic-service
+    host_name               {{ host.name }}
+    service_description     Host Ping
+    check_command           check-ping
+    check_interval          5
+}
+
+define service {
+    use                     generic-service
+    host_name               {{ host.name }}
+    service_description     ntp_process
+    check_command           check_remote_ntp
+    check_interval          10
+}
+
+{% endfor %}
