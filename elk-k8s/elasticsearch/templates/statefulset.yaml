@@ -183,70 +183,70 @@ spec:
           - name: "elasticsearch-log"
             mountPath: /usr/share/elasticsearch/logs
 
-      # - name: elasticsearch-exporter
-      #   image: elasticsearch-exporter:1.5.0
-      #   resources:
-      #     requests:
-      #       cpu: 100m
-      #       memory: 128Mi
-      #     limits:
-      #       cpu: 100m
-      #       memory: 128Mi
-      #   env:
-      #   - name: ES_URI
-      #     valueFrom:
-      #       secretKeyRef:
-      #         name: es-secret
-      #         key: esURI
-      #   ports:
-      #   - containerPort: 9114
+      - name: elasticsearch-exporter
+        image: prometheuscommunity/elasticsearch-exporter:v1.5.0
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
+        env:
+        - name: ES_URI
+          valueFrom:
+            secretKeyRef:
+              name: es-secret
+              key: esURI
+        ports:
+        - containerPort: 9114
 
-      # - name: elasticsearch-logrotate
-      #   image: logrotate-1.3:1.0.1
-      #   imagePullPolicy: Always
-      #   resources:
-      #     requests:
-      #       cpu: "0.05"
-      #       memory: 200Mi
-      #     limits:
-      #       cpu: "0.05"
-      #       memory: 200Mi
-      #   env:
-      #   - name: LOGS_DIRECTORIES
-      #     value: '/usr/share/elasticsearch/logs'
-      #   - name: LOGROTATE_INTERVAL
-      #     value: 'hourly'
-      #   - name: LOGROTATE_COPIES
-      #     value: '1'
-      #   - name: LOGROTATE_POSTROTATE_COMMAND
-      #     value: 'pkill -SIGUSR1 elasticsearch >/dev/null 2>&1'
-      #   - name: LOGROTATE_SIZE
-      #     value: 10M
-      #   volumeMounts:
-      #   - mountPath: /usr/share/elasticsearch/logs/
-      #     name: elasticsearch-log
+      - name: elasticsearch-logrotate
+        image: blacklabelops/logrotate:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "0.05"
+            memory: 200Mi
+          limits:
+            cpu: "0.05"
+            memory: 200Mi
+        env:
+        - name: LOGS_DIRECTORIES
+          value: '/usr/share/elasticsearch/logs'
+        - name: LOGROTATE_INTERVAL
+          value: 'hourly'
+        - name: LOGROTATE_COPIES
+          value: '1'
+        - name: LOGROTATE_POSTROTATE_COMMAND
+          value: 'pkill -SIGUSR1 elasticsearch >/dev/null 2>&1'
+        - name: LOGROTATE_SIZE
+          value: 10M
+        volumeMounts:
+        - mountPath: /usr/share/elasticsearch/logs/
+          name: elasticsearch-log
 
-      # - name: elasticsearch-fluentd
-      #   image: fluentd:v1.14.3-debian-1.0-0
-      #   imagePullPolicy: Always
-      #   resources:
-      #     requests:
-      #       cpu: "0.01"
-      #       memory: 149Mi
-      #     limits:
-      #       cpu: "0.1"
-      #       memory: 149Mi
-      #   args:
-      #   - "-c"
-      #   - /etc/fluentd-config/fluentd.conf
-      #   env:
-      #   - name: TINI_SUBREAPER
-      #   volumeMounts:
-      #   - mountPath: /usr/share/elasticsearch/logs/
-      #     name: elasticsearch-log
-      #   - mountPath: /etc/fluentd-config/fluentd.conf
-      #     name: config-volume
-      #     subPath: fluentd.conf
+      - name: elasticsearch-fluentd
+        image: kazisafayetjamil/fluentd-gelf:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "0.01"
+            memory: 149Mi
+          limits:
+            cpu: "0.1"
+            memory: 149Mi
+        args:
+        - "-c"
+        - /etc/fluentd-config/fluentd.conf
+        env:
+        - name: TINI_SUBREAPER
+        volumeMounts:
+        - mountPath: /usr/share/elasticsearch/logs/
+          name: elasticsearch-log
+        - mountPath: /etc/fluentd-config/fluentd.conf
+          name: config-volume
+          subPath: fluentd.conf
       volumes:
       - name: elasticsearch-log
         emptyDir: {}
