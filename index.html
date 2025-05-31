@@ -61,6 +61,80 @@
             </li>
               </ul>
             </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#ansible-and-puppet" class="nav-link">Ansible and Puppet</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#dockerkubernetes" class="nav-link">Docker/Kubernetes</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#nginx-with-docker-compose" class="nav-link">Nginx with Docker Compose</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#requirements-overview" class="nav-link">Requirements Overview</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#helm" class="nav-link">Helm</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#elasticsearch-deployment-on-kubernetes-via-helm" class="nav-link">Elasticsearch Deployment on Kubernetes via Helm</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#github-reference" class="nav-link">GitHub Reference</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#metrics" class="nav-link">Metrics</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#explain-how-prometheus-work" class="nav-link">Explain how Prometheus work.</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#how-do-you-create-custom-prometheus-alerts-and-alerting-rules-for-kubernetes-monitoring-provide-an-example-alert-rule-and-its-configuration" class="nav-link">How do you create custom Prometheus alerts and alerting rules for Kubernetes monitoring? Provide an example alert rule and its configuration.</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#what-is-the-prometheus-query-you-can-use-in-granfana-to-properly-show-usage-trend-of-an-application-metric-that-is-a-counter" class="nav-link">What is the Prometheus query you can use in Granfana to properly show usage trend of an application metric that is a counter?</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#cassandra" class="nav-link">Cassandra</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#casequery-to-db-cluster-returns-different-result-each-time-users-reported-query-result-has-data-records-that-they-deleted-days-ago-explain-what-the-likely-reason-for-the-behavior-and-how-to-avoid-it" class="nav-link">Case:Query to db cluster returns different result each time. Users reported query result has data records that they deleted days ago. Explain what the likely reason for the behavior and how to avoid it.</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#mongo" class="nav-link">Mongo</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#case" class="nav-link">Case</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#prerequisites" class="nav-link">Prerequisites</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#steps-to-shard-the-collection" class="nav-link">Steps to Shard the Collection</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
@@ -68,9 +142,213 @@
 
 <h1 id="welcome-to-wsd-devops-interview-challenge">Welcome to WSD Devops Interview Challenge</h1>
 <h2 id="case-and-scenarios">Case and Scenarios</h2>
-<p>1: Which ansible command can display all ansible_ configuration for a host.
-Ans:</p>
-<p>2: Please configure a cron job that runs logrotate on all machines every 10 minutes between 2h - 4h.</p></div>
+<p><br></p>
+<h1 id="ansible-and-puppet">Ansible and Puppet</h1>
+<p><br></p>
+<h3 id="1-which-ansible-command-can-display-all-ansible_-configuration-for-a-host">1: Which ansible command can display all ansible_ configuration for a host.</h3>
+<p>Ans: <code>ansible &lt;host&gt; -m setup -i inventory.yml</code>
+For my case for challenge number 3 with ansible the answer will be like </p>
+<p><code>ansible app-vm -m setup -i inventory.yml</code></p>
+<h3 id="2-please-configure-a-cron-job-that-runs-logrotate-on-all-machines-every-10-minutes-between-2h-4h">2: Please configure a cron job that runs logrotate on all machines every 10 minutes between 2h - 4h.</h3>
+<p><br></p>
+<h3 id="3-please-deploy-ntpd-package-to-the-following-3-servers-with-custom-config-of-etcntpdconf-and-we-also-need-to-deploy-monitoring-template-onto-our-nagios-server-monitoringfra1internal-each-of-the-above-machines-should-use-the-following-nagios-templates">3: Please deploy ntpd package to the following 3 servers with custom config of /etc/ntpd.conf and We also need to deploy monitoring template onto our nagios server “monitoring.fra1.internal”, each of the above machines should use the following nagios templates:</h3>
+<p>Ans:</p>
+<p>This <a href="https://github.com/safayetjamil647/wsd-devops-interview/tree/main/ansible">github reference url </a> contains the Ansible playbook to deploy the <code>ntpd</code> service with custom configurations on three remote servers. Additionally, each server is registered with the <strong>Nagios monitoring server</strong> using specific templates and nagios host configurations</p>
+<p>What This Playbook Does</p>
+<ul>
+<li>Installs the <code>ntp</code>,<code>nagios-nrpe-server</code>,<code>nagios-plugins</code> package on all target hosts.</li>
+<li>Replaces <code>/etc/ntp.conf</code> with a custom configuration.</li>
+<li>Restarts the NTP daemon.</li>
+<li>Configures NRPE checks for NTP and ping on all nodes.</li>
+<li>Ensures the Nagios server applies the following templates per host:</li>
+<li><code>ntp-monitoring</code></li>
+<li><code>ping-monitoring</code></li>
+</ul>
+<p><br></p>
+<h1 id="dockerkubernetes">Docker/Kubernetes</h1>
+<p><br>
+Suggested environment: Ubuntu 20 LTS, docker 19 or above
+1:Prepare a docker-compose for a nginx server.
+ Requirements:
+  nginx logs need to survive between nginx container restarts
+  docker should use network bridge subnet 172.20.8.0/24</p>
+<p>Ans : </p>
+<h2 id="nginx-with-docker-compose">Nginx with Docker Compose</h2>
+<p><a href="https://github.com/safayetjamil647/wsd-devops-interview/tree/main/docker-kubernetes/nginx">View on GitHub</a></p>
+<hr />
+<h2 id="requirements-overview">Requirements Overview</h2>
+<h3 id="1-log-persistence-and-network-configurations">1. Log Persistence and network configurations</h3>
+<p>To ensure logs survive between container restarts, a volume is mounted and to achive 
+the network configurations pls check the network block in the yml .</p>
+<pre><code>version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - &quot;80:80&quot;
+      - &quot;443:443&quot;
+    volumes:
+      - ./logs:/var/log/nginx
+    networks:
+      nginx_net:
+        ipv4_address: 172.20.8.10
+
+networks:
+  nginx_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.8.0/24
+          gateway: 172.20.8.1
+</code></pre>
+<p><a href="https://github.com/safayetjamil647/wsd-devops-interview/tree/main/docker-kubernetes/nginx">View on GitHub</a></p>
+<h3 id="2-which-kubernetes-command-you-will-use-to-identify-the-reason-for-a-pod-restart-in-the-project-internal-under-namespace-production">2: Which Kubernetes command you will use to identify the reason for a pod restart in the project "internal" under namespace "production".</h3>
+<p>Ans: <code>kubectl get pods -n production -l app=internal</code></p>
+<h3 id="3case-for-pod-restart-issue">3:Case for pod restart issue:</h3>
+<p>Memory request &amp; limit: 1000 &amp; 1500
+CPU request &amp; limit: 1000 &amp; 2000
+Xmx of 1000M
+Java-app keep restarting at random.  From Kubernetes configuration perspective, what are the possible reasons for the pod restarts?</p>
+<p>Ans:  </p>
+<ul>
+<li>OOMKill (Out of Memory)
+Even though Xmx is set to 1000M, Java memory usage is not limited to heap alone. Native memory (e.g., metaspace, threads, GC, off-heap caches) can exceed this, possibly hitting the pod's memory limit (1500Mi) and triggering OOMKilled.
+Also there are other possible reason like </li>
+<li>CPU Throttling and </li>
+<li>Logrotate Crush Loop or </li>
+<li>Native Memory Leaks of JVM</li>
+</ul>
+<p><br></p>
+<h1 id="helm">Helm</h1>
+<p><br>
+Please use the accompanied elasticsearch helm template to create a Kubernetes deployment of elasticsearch.<br />
+Provide a screenshot &amp; deployment yaml of the resultant deployment in Kubernetes.</p>
+<h2 id="elasticsearch-deployment-on-kubernetes-via-helm">Elasticsearch Deployment on Kubernetes via Helm</h2>
+<p>This guide demonstrates how to deploy <strong>Elasticsearch</strong> using a Helm chart and provides both:</p>
+<ul>
+<li>The final rendered <strong>Deployment YAML</strong></li>
+<li>
+<p>A screenshot of the deployed pod in <strong>Kubernetes</strong></p>
+</li>
+<li>
+<p>A reference to the GitHub-hosted Helm chart template</p>
+</li>
+</ul>
+<hr />
+<h2 id="github-reference">GitHub Reference</h2>
+<blockquote>
+<p>Helm chart location:<br />
+<a href="https://github.com/safayetjamil647/wsd-devops-interview/tree/main/elk-k8s">View elasticsearch Helm chart on GitHub</a></p>
+</blockquote>
+<hr />
+<p><br></p>
+<h1 id="metrics">Metrics</h1>
+<p><br></p>
+<h2 id="explain-how-prometheus-work">Explain how Prometheus work.</h2>
+<p>Ans : Prometheus is  tool which uses time series database to scrapes/pulls data from exporters and store it for visualizations and alerting or other type of customizations .</p>
+<ol>
+<li><strong>Scrape metrics from exporters</strong><br />
+   Prometheus collects metrics from sources like:</li>
+<li><code>node_exporter</code> (system metrics)</li>
+<li>
+<p><code>blackbox_exporter</code> (probe endpoints)</p>
+</li>
+<li>
+<p><strong>Store metrics in a time-series database</strong>  </p>
+</li>
+<li>Prometheus stores data in a high-performance, multi-dimensional time-series DB.</li>
+<li>
+<p>Labels (key-value pairs) enable powerful filtering and grouping.</p>
+</li>
+<li>
+<p><strong>Pull-based architecture</strong>  </p>
+</li>
+<li>Prometheus <strong>pulls</strong> metrics from targets.</li>
+<li>Requires configuration on host machines to expose metrics endpoints (e.g., port <code>9100</code> for <code>node_exporter</code>).</li>
+</ol>
+<h2 id="how-do-you-create-custom-prometheus-alerts-and-alerting-rules-for-kubernetes-monitoring-provide-an-example-alert-rule-and-its-configuration">How do you create custom Prometheus alerts and alerting rules for Kubernetes monitoring? Provide an example alert rule and its configuration.</h2>
+<p>Below there an example alerts rules for kubernetes monitoring . In that rules it is specifically checking nodes availability of kubernetes cluster.</p>
+<pre><code>  - alert: KubernetesNodeNotReady
+    expr: kube_node_status_condition{condition=&quot;Ready&quot;,status=&quot;true&quot;} == 0
+    for: 10m
+    labels:
+      severity: critical
+    annotations:
+      summary: Kubernetes Node not ready (instance {{ $labels.instance }})
+      description: &quot;Node {{ $labels.node }} has been unready for a long time\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}&quot;
+</code></pre>
+<p>Also another example alert for previously shared java application issue  </p>
+<pre><code> - alert: KubernetesContainerOomKiller
+    expr: (kube_pod_container_status_restarts_total - kube_pod_container_status_restarts_total offset 10m &gt;= 1) and ignoring (reason) min_over_time(kube_pod_container_status_last_terminated_reason{reason=&quot;OOMKilled&quot;}[10m]) == 1
+    for: 0m
+    labels:
+      severity: warning
+    annotations:
+      summary: Kubernetes Container oom killer (instance {{ $labels.instance }})
+      description: &quot;Container {{ $labels.container }} in pod {{ $labels.namespace }}/{{ $labels.pod }} has been OOMKilled {{ $value }} times in the last 10 minutes.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}&quot;
+</code></pre>
+<p><br>
+<br></p>
+<h2 id="what-is-the-prometheus-query-you-can-use-in-granfana-to-properly-show-usage-trend-of-an-application-metric-that-is-a-counter">What is the Prometheus query you can use in Granfana to properly show usage trend of an application metric that is a counter?</h2>
+<p>Ans: <code>rate(http_requests_total[5m])</code></p>
+<p><br></p>
+<h1 id="cassandra">Cassandra</h1>
+<p><br></p>
+<h2 id="casequery-to-db-cluster-returns-different-result-each-time-users-reported-query-result-has-data-records-that-they-deleted-days-ago-explain-what-the-likely-reason-for-the-behavior-and-how-to-avoid-it">Case:Query to db cluster returns different result each time.  Users reported query result has data records that they deleted days ago.  Explain what the likely reason for the behavior and how to avoid it.</h2>
+<p>Ans:</p>
+<p>In Cassandra:</p>
+<ul>
+<li>A DELETE doesn’t remove data immediately.Instead, it writes a tombstone marker.During compaction, tombstones and old data are reconciled and removed.If compaction hasn’t happened, stale data might still exist on disk and be served if consistency is low.</li>
+</ul>
+<p>Adjust <code>gc_grace_seconds</code> Appropriately
+Default: 86400 seconds (1 days).</p>
+<p>Recommendation: Only reduce this value if you're confident that all replicas are consistently up and that repairs are run more frequently than the new gc_grace_seconds value. Setting it too low can risk zombie data if a node misses a tombstone due to being down .</p>
+<p>How to Set:</p>
+<p><code>ALTER TABLE keyspace.table_name WITH gc_grace_seconds = 86400;</code></p>
+<ul>
+<li>
+<p>Ensure Regular RepairsRun nodetool repair on all nodes within the gc_grace_seconds timeframe to synchronize data and tombstones across replicas.This prevents scenarios where a node misses a deletion and later resurrects data .</p>
+</li>
+<li>
+<p>Use Appropriate Consistency Levels.</p>
+</li>
+</ul>
+<p>Writes: Use QUORUM or higher to ensure that a majority of replicas acknowledge the write.</p>
+<p>Reads: Use QUORUM or higher to ensure that reads fetch the most recent data from multiple replicas, reducing the chance of reading stale data.</p>
+<p><br></p>
+<h1 id="mongo">Mongo</h1>
+<p><br></p>
+<h2 id="case">Case</h2>
+<ul>
+<li>We have a MongoDB <strong>replica set</strong> called <code>replicaset_1</code> containing the database <code>sanfrancisco</code>.</li>
+<li>Collection: <code>sanfrancisco.company_name</code></li>
+<li>Due to <strong>performance limitations</strong>, we've added a second replica set: <code>replicaset_2</code></li>
+<li>Goal: Shard the <code>company_name</code> collection across both replica sets using <code>_id</code> as the shard key</li>
+</ul>
+<hr />
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Ensure:
+- Sharding is enabled on your MongoDB cluster
+- Replica sets <code>replicaset_1</code> and <code>replicaset_2</code> are added as <strong>shards</strong>
+- You are connected to the <strong>mongos router</strong> and <strong>config server</strong> is properly running with proper configurations</p>
+<hr />
+<h2 id="steps-to-shard-the-collection">Steps to Shard the Collection</h2>
+<pre><code class="language-bash">
+
+sh.enableSharding(&quot;sanfrancisco&quot;)
+
+sh.addShard(&quot;rs-shard-01/shard-01-node-a:27017,shard-01-node-b:27017,shard-01-node-c:27017&quot;)
+
+sh.addShard(&quot;rs-shard-02/shard-02-node-a:27017,shard-02-node-b:27017,shard-02-node-c:27017&quot;)
+
+sh.enableSharding(&quot;sanfrancisco&quot;)
+
+sh.shardCollection(&quot;sanfrancisco.company_name&quot;, { _id: &quot;hashed&quot; })
+
+</code></pre></div>
             </div>
         </div>
 
@@ -152,5 +430,5 @@ Ans:</p>
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2025-05-30 17:14:37.507793+00:00
+Build Date UTC : 2025-05-31 11:11:10.200906+00:00
 -->
