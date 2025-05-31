@@ -28,7 +28,8 @@ The configuration is below there integrated with ansible yml and here is the ref
 ```bash
 */10 2-4 * * * /usr/sbin/logrotate /etc/logrotate.conf
 ```
-
+**GitHub Reference:**  
+[ Ansible Playbook – Logrotate Config Setup](https://github.com/safayetjamil647/wsd-devops-interview/blob/main/ansible/logrotate_cron.yml)
 ---
 
 #### 3. Deploy the `ntpd` package to 3 servers with a custom `/etc/ntpd.conf` and configure Nagios monitoring.
@@ -44,6 +45,11 @@ The configuration is below there integrated with ansible yml and here is the ref
 - Registers the machines to Nagios with templates:
   - `ntp-monitoring`
   - `ping-monitoring`
+[All Host Nagios SS](https://github.com/safayetjamil647/wsd-devops-interview/blob/main/wsd-devops-interview/images/all-hosts-nagios.png)
+[All NTP Nagios Services](https://github.com/safayetjamil647/wsd-devops-interview/blob/main/wsd-devops-interview/images/successfull-ntp.png)
+[All Ping Nagios Services Pending State](https://github.com/safayetjamil647/wsd-devops-interview/blob/main/wsd-devops-interview/images/ping-pending.png)
+
+Note: During the time of screenshots all ping were in pending state .Later ping failed due to some reason .Will fix that .
 
 ---
 
@@ -96,11 +102,15 @@ kubectl get pods -n production -l app=internal
 #### 3. Java app keeps restarting — memory request 1000Mi, limit 1500Mi; CPU request 1000m, limit 2000m; Xmx = 1000M.
 
  **Possible Restart Causes:**
+ <br>
 - **OOMKilled**: Java uses native memory beyond Xmx (e.g., metaspace, threads)
+<br>
 - **CPU Throttling**: App exceeds CPU limits
+<br>
 - **CrashLoop**: Logrotate failure or other startup issues
+<br>
 - **JVM Native Memory Leaks**
-
+<br>
 ---
 
 ###  Helm
@@ -111,10 +121,14 @@ kubectl get pods -n production -l app=internal
 [ Elasticsearch Helm Chart](https://github.com/safayetjamil647/wsd-devops-interview/tree/main/elk-k8s)
 
  Deliverables:
-- Final rendered `Deployment.yaml`
-- Screenshot of Elasticsearch pod running![Elasticsearch Pod Running](./elk-k8s.png)
+<br>
+- Final rendered `statefulset.yaml` . [URL](https://github.com/safayetjamil647/wsd-devops-interview/blob/main/elk-k8s/elasticsearch/templates/statefulset.yaml)
+<br>
+- Screenshot of Elasticsearch pod running.[URL](https://github.com/safayetjamil647/wsd-devops-interview/blob/main/wsd-devops-interview/images/elk-k8s.png)
+<br>
 - Helm chart located in `elk-k8s/`
-
+<br>
+As part of the deployment and simplicity there is no ingress config using metallb or others , used k3d to spin up the cluster and can access elasticsearch via kubectl port forward.
 ---
 
 ###  Metrics (Prometheus)
@@ -122,14 +136,16 @@ kubectl get pods -n production -l app=internal
 #### How Prometheus Works
 
 1. **Scrapes metrics** from exporters like:
-   - `node_exporter`, `blackbox_exporter`, etc.
+   - `node_exporter`, `blackbox_exporter`, etc over the http protocol
 
 2. **Stores metrics** in a time-series DB:
    - Multi-dimensional with labels for filtering/grouping
 
-3. **Pull-based system**:
-   - Host must expose metrics
-   - Example: `node_exporter` runs on port `9100`
+3. **Visualizations**:
+   - Helps to visualize data using grafana/others and promql
+
+4. **Alerting**:
+   - Push data to alertmanagers to validate rules and trigger alerts
 
 ---
 
@@ -168,8 +184,8 @@ kubectl get pods -n production -l app=internal
 ---
 
 #### Prometheus Query in Grafana for Counter Metrics Trend
-
-```prometheus
+Solution:
+```
 rate(http_requests_total[5m])
 ```
 
@@ -186,12 +202,12 @@ rate(http_requests_total[5m])
 
 **Fix:**
 1. Set appropriate `gc_grace_seconds`
-   ```sql
+   ```
    ALTER TABLE keyspace.table_name WITH gc_grace_seconds = 86400;
    ```
 
 2. Run frequent **repairs**:
-   ```bash
+   ```
    nodetool repair
    ```
 
@@ -205,7 +221,7 @@ rate(http_requests_total[5m])
 #### Case: Shard `sanfrancisco.company_name` using `_id` key
 
 **Assumptions:**
-- Mongos connected
+- Mongo router connected
 - Config servers healthy
 - Sharding enabled
 
@@ -220,4 +236,4 @@ sh.shardCollection("sanfrancisco.company_name", { _id: "hashed" });
 ---
 
 For full source and configs: [🔗 GitHub Repo](https://github.com/safayetjamil647/wsd-devops-interview)
-Notes : All of the above scenarios and cases solved by using previous experiences , official documentations of tools and components,blogs ,google and github example repositories 
+Notes : All of the above scenarios and cases solved by using previous experiences , official documentations of tools and components,blogs ,google and github example repositories .Also there is good amount of prompt engineering to achieve the goals in a fastest manner.
