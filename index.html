@@ -72,7 +72,6 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="wsd-devops-interview">WSD Devops Interview</h1>
-<p>A brief description of what this project does and who it's for</p>
 <h1 id="welcome-to-wsd-devops-interview-challenge">Welcome to WSD DevOps Interview Challenge</h1>
 <hr />
 <h2 id="case-scenarios">Case &amp; Scenarios</h2>
@@ -102,10 +101,14 @@
 - Registers the machines to Nagios with templates:
   - <code>ntp-monitoring</code>
   - <code>ping-monitoring</code>
+<br>
 <a href="https://github.com/safayetjamil647/wsd-devops-interview/blob/main/wsd-devops-interview/images/all-hosts-nagios.png">All Host Nagios SS</a>
+<br>
 <a href="https://github.com/safayetjamil647/wsd-devops-interview/blob/main/wsd-devops-interview/images/successfull-ntp.png">All NTP Nagios Services</a>
-<a href="https://github.com/safayetjamil647/wsd-devops-interview/blob/main/wsd-devops-interview/images/ping-pending.png">All Ping Nagios Services Pending State</a></p>
-<p>Note: During the time of screenshots all ping were in pending state .Later ping failed due to some reason .Will fix that .</p>
+<br>
+<a href="https://github.com/safayetjamil647/wsd-devops-interview/blob/main/wsd-devops-interview/images/ping-pending.png">All Ping Nagios Services Pending State</a>
+<br>
+Note: During the time of screenshots all ping were in pending state .Later ping failed due to some reason .Will fix that .</p>
 <hr />
 <h3 id="docker-kubernetes">Docker / Kubernetes</h3>
 <h4 id="1-prepare-a-docker-composeyml-for-an-nginx-server">1. Prepare a <code>docker-compose.yml</code> for an Nginx server.</h4>
@@ -170,7 +173,7 @@ networks:
 As part of the deployment and simplicity there is no ingress config using metallb or others , used k3d to spin up the cluster and can access elasticsearch via kubectl port forward.</p>
 <hr />
 <h3 id="metrics-prometheus">Metrics (Prometheus)</h3>
-<h4 id="how-prometheus-works">How Prometheus Works</h4>
+<h4 id="1how-prometheus-works">1:How Prometheus Works</h4>
 <ol>
 <li><strong>Scrapes metrics</strong> from exporters like:</li>
 <li>
@@ -194,7 +197,7 @@ As part of the deployment and simplicity there is no ingress config using metall
 <li>Push data to alertmanagers to validate rules and trigger alerts</li>
 </ol>
 <hr />
-<h4 id="custom-prometheus-alerts-for-kubernetes">Custom Prometheus Alerts for Kubernetes</h4>
+<h4 id="2custom-prometheus-alerts-for-kubernetes">2:Custom Prometheus Alerts for Kubernetes</h4>
 <p><strong>Example 1: Node Not Ready</strong></p>
 <pre><code class="language-yaml">- alert: KubernetesNodeNotReady
   expr: kube_node_status_condition{condition=&quot;Ready&quot;,status=&quot;true&quot;} == 0
@@ -222,7 +225,7 @@ As part of the deployment and simplicity there is no ingress config using metall
   LABELS = {{ $labels }}&quot;
 </code></pre>
 <hr />
-<h4 id="prometheus-query-in-grafana-for-counter-metrics-trend">Prometheus Query in Grafana for Counter Metrics Trend</h4>
+<h4 id="3prometheus-query-in-grafana-for-counter-metrics-trend">3:Prometheus Query in Grafana for Counter Metrics Trend</h4>
 <p>Solution:</p>
 <pre><code>rate(http_requests_total[5m])
 </code></pre>
@@ -343,5 +346,5 @@ Notes : All of the above scenarios and cases solved by using previous experience
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2025-05-31 15:49:55.831657+00:00
+Build Date UTC : 2025-05-31 16:39:21.824879+00:00
 -->
