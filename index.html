@@ -88,6 +88,8 @@
 <p>The configuration is below there integrated with ansible yml and here is the reference yml </p>
 <pre><code class="language-bash">*/10 2-4 * * * /usr/sbin/logrotate /etc/logrotate.conf
 </code></pre>
+<p><strong>GitHub Reference:</strong><br />
+<a href="https://github.com/safayetjamil647/wsd-devops-interview/blob/main/ansible/logrotate_cron.yml"> Ansible Playbook – Logrotate Config Setup</a></p>
 <hr />
 <h4 id="3-deploy-the-ntpd-package-to-3-servers-with-a-custom-etcntpdconf-and-configure-nagios-monitoring">3. Deploy the <code>ntpd</code> package to 3 servers with a custom <code>/etc/ntpd.conf</code> and configure Nagios monitoring.</h4>
 <p><strong>GitHub Reference:</strong><br />
@@ -99,7 +101,11 @@
 - Adds NRPE checks (NTP &amp; Ping) on all hosts
 - Registers the machines to Nagios with templates:
   - <code>ntp-monitoring</code>
-  - <code>ping-monitoring</code></p>
+  - <code>ping-monitoring</code>
+<a href="https://github.com/safayetjamil647/wsd-devops-interview/blob/main/wsd-devops-interview/images/all-hosts-nagios.png">All Host Nagios SS</a>
+<a href="https://github.com/safayetjamil647/wsd-devops-interview/blob/main/wsd-devops-interview/images/successfull-ntp.png">All NTP Nagios Services</a>
+<a href="https://github.com/safayetjamil647/wsd-devops-interview/blob/main/wsd-devops-interview/images/ping-pending.png">All Ping Nagios Services Pending State</a></p>
+<p>Note: During the time of screenshots all ping were in pending state .Later ping failed due to some reason .Will fix that .</p>
 <hr />
 <h3 id="docker-kubernetes">Docker / Kubernetes</h3>
 <h4 id="1-prepare-a-docker-composeyml-for-an-nginx-server">1. Prepare a <code>docker-compose.yml</code> for an Nginx server.</h4>
@@ -139,26 +145,36 @@ networks:
 <hr />
 <h4 id="3-java-app-keeps-restarting-memory-request-1000mi-limit-1500mi-cpu-request-1000m-limit-2000m-xmx-1000m">3. Java app keeps restarting — memory request 1000Mi, limit 1500Mi; CPU request 1000m, limit 2000m; Xmx = 1000M.</h4>
 <p><strong>Possible Restart Causes:</strong>
+ <br>
 - <strong>OOMKilled</strong>: Java uses native memory beyond Xmx (e.g., metaspace, threads)
+<br>
 - <strong>CPU Throttling</strong>: App exceeds CPU limits
+<br>
 - <strong>CrashLoop</strong>: Logrotate failure or other startup issues
-- <strong>JVM Native Memory Leaks</strong></p>
+<br>
+- <strong>JVM Native Memory Leaks</strong>
+<br></p>
 <hr />
 <h3 id="helm">Helm</h3>
 <h4 id="elasticsearch-deployment-using-helm">Elasticsearch deployment using Helm</h4>
 <p><strong>GitHub Reference:</strong><br />
 <a href="https://github.com/safayetjamil647/wsd-devops-interview/tree/main/elk-k8s"> Elasticsearch Helm Chart</a></p>
 <p>Deliverables:
-- Final rendered <code>Deployment.yaml</code>
-- Screenshot of Elasticsearch pod running<img alt="Elasticsearch Pod Running" src="./elk-k8s.png" />
-- Helm chart located in <code>elk-k8s/</code></p>
+<br>
+- Final rendered <code>statefulset.yaml</code> . <a href="https://github.com/safayetjamil647/wsd-devops-interview/blob/main/elk-k8s/elasticsearch/templates/statefulset.yaml">URL</a>
+<br>
+- Screenshot of Elasticsearch pod running.<a href="https://github.com/safayetjamil647/wsd-devops-interview/blob/main/wsd-devops-interview/images/elk-k8s.png">URL</a>
+<br>
+- Helm chart located in <code>elk-k8s/</code>
+<br>
+As part of the deployment and simplicity there is no ingress config using metallb or others , used k3d to spin up the cluster and can access elasticsearch via kubectl port forward.</p>
 <hr />
 <h3 id="metrics-prometheus">Metrics (Prometheus)</h3>
 <h4 id="how-prometheus-works">How Prometheus Works</h4>
 <ol>
 <li><strong>Scrapes metrics</strong> from exporters like:</li>
 <li>
-<p><code>node_exporter</code>, <code>blackbox_exporter</code>, etc.</p>
+<p><code>node_exporter</code>, <code>blackbox_exporter</code>, etc over the http protocol</p>
 </li>
 <li>
 <p><strong>Stores metrics</strong> in a time-series DB:</p>
@@ -167,10 +183,15 @@ networks:
 <p>Multi-dimensional with labels for filtering/grouping</p>
 </li>
 <li>
-<p><strong>Pull-based system</strong>:</p>
+<p><strong>Visualizations</strong>:</p>
 </li>
-<li>Host must expose metrics</li>
-<li>Example: <code>node_exporter</code> runs on port <code>9100</code></li>
+<li>
+<p>Helps to visualize data using grafana/others and promql</p>
+</li>
+<li>
+<p><strong>Alerting</strong>:</p>
+</li>
+<li>Push data to alertmanagers to validate rules and trigger alerts</li>
 </ol>
 <hr />
 <h4 id="custom-prometheus-alerts-for-kubernetes">Custom Prometheus Alerts for Kubernetes</h4>
@@ -202,7 +223,8 @@ networks:
 </code></pre>
 <hr />
 <h4 id="prometheus-query-in-grafana-for-counter-metrics-trend">Prometheus Query in Grafana for Counter Metrics Trend</h4>
-<pre><code class="language-prometheus">rate(http_requests_total[5m])
+<p>Solution:</p>
+<pre><code>rate(http_requests_total[5m])
 </code></pre>
 <hr />
 <h3 id="cassandra">Cassandra</h3>
@@ -213,13 +235,11 @@ networks:
 - Inconsistent reads may serve stale data</p>
 <p><strong>Fix:</strong>
 1. Set appropriate <code>gc_grace_seconds</code>
-   <code>sql
-   ALTER TABLE keyspace.table_name WITH gc_grace_seconds = 86400;</code></p>
+   <code>ALTER TABLE keyspace.table_name WITH gc_grace_seconds = 86400;</code></p>
 <ol>
 <li>
 <p>Run frequent <strong>repairs</strong>:
-   <code>bash
-   nodetool repair</code></p>
+   <code>nodetool repair</code></p>
 </li>
 <li>
 <p>Use strong <strong>consistency levels</strong>:</p>
@@ -230,7 +250,7 @@ networks:
 <h3 id="mongodb">MongoDB</h3>
 <h4 id="case-shard-sanfranciscocompany_name-using-_id-key">Case: Shard <code>sanfrancisco.company_name</code> using <code>_id</code> key</h4>
 <p><strong>Assumptions:</strong>
-- Mongos connected
+- Mongo router connected
 - Config servers healthy
 - Sharding enabled</p>
 <pre><code class="language-javascript">sh.addShard(&quot;rs-shard-01/shard-01-node-a:27017,shard-01-node-b:27017,shard-01-node-c:27017&quot;);
@@ -241,7 +261,7 @@ sh.shardCollection(&quot;sanfrancisco.company_name&quot;, { _id: &quot;hashed&qu
 </code></pre>
 <hr />
 <p>For full source and configs: <a href="https://github.com/safayetjamil647/wsd-devops-interview">🔗 GitHub Repo</a>
-Notes : All of the above scenarios and cases solved by using previous experiences , official documentations of tools and components,blogs ,google and github example repositories.</p></div>
+Notes : All of the above scenarios and cases solved by using previous experiences , official documentations of tools and components,blogs ,google and github example repositories .Also there is good amount of prompt engineering to achieve the goals in a fastest manner.</p></div>
             </div>
         </div>
 
@@ -323,5 +343,5 @@ Notes : All of the above scenarios and cases solved by using previous experience
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2025-05-31 14:26:27.208045+00:00
+Build Date UTC : 2025-05-31 15:49:55.831657+00:00
 -->
